@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Jeffrey Chen</Authors>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Owners>Jeffrey Chen</Owners>
+    <Summary>HL7 version 2 ASP.Net Core Implementation</Summary>
+    <Title>HL7V2</Title>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="DataType\" />
+    <Folder Include="Extension\" />
+    <Folder Include="Segments\" />
+    <Folder Include="Fields\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.IO.FileSystem" Version="4.3.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.4.0" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.4.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HL7Table\HL7Table.csproj" />
+  </ItemGroup>
+</Project>
