@@ -31,6 +31,7 @@ namespace HL7V2 {
         Segments.Add(new Segment(s, Version));
       }
 
+      if (!ok) throw new Exception("Incorrect message header");
       throw new NotImplementedException();
     }
 

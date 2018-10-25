@@ -26,7 +26,7 @@ namespace HL7V2.Segments {
       SequenceNumber = s.Length > 12 ? s[12] : string.Empty;
       ContinuationPointer = s.Length > 13 ? s[13] : string.Empty;
       //AcceptAcknowledgmentType = s.Length > 14 ?  : Table.AcknowledgementCondition.None;
-      //TODO: Complete the rest of fields
+      //UNDONE Complete the rest of fields
       return false;
     }
 

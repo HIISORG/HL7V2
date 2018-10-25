@@ -5,7 +5,7 @@ namespace HL7V2.DataType {
       ID = value;
     }
 
-    //TODO: Complete the rest of element
+    //UNDONE Complete the rest of element
     public string ID;
   }
 }
