@@ -11,18 +11,22 @@ namespace HL7V2 {
 
     public File(string content) {
       this.content = content;
+      Process();
     }
     public File(Stream stream) {
       StreamReader sr = new StreamReader(stream);
       content = sr.ReadToEnd();
+      Process();
     }
     public File(FileInfo file) {
       content = file.OpenText().ReadToEnd();
+      Process();
     }
 
     public void Process() {
       bool ok = false;
-      foreach (string s in content.Split(delimiters, StringSplitOptions.RemoveEmptyEntries)) {
+      // Process each line
+      foreach (string s in content.Split(SegmentTerminator, StringSplitOptions.RemoveEmptyEntries)) {
         if (!ok) {
           // Process only start after the file type has been identified
           switch (s.Substring(0, 4)) {
@@ -41,12 +45,12 @@ namespace HL7V2 {
             case "MSH":
               Type = FileType.Message;
               Batchs.Add(new Batch());
-              Batchs.Last().Messages.Add(new Message());
-              MSH msh = new MSH(s);
-              msh.Process();
-
-              Comment = msh.VersionID.ID;
+              Batchs.Last().Messages.Add(new Message(s));
               ok = true;
+              break;
+            default:
+              // Proces segment
+              Messages.Last().Segments.Add(new Segment(s));
               break;
           }
         } else {
@@ -69,9 +73,9 @@ namespace HL7V2 {
 
 		#region Variables
     /// <summary>
-    /// The delimiters to seperate each segment.
+    /// The delimiters to seperate each segment. This value cannot be changed by implementors.
     /// </summary>
-		readonly string[] delimiters = {
+		readonly string[] SegmentTerminator = {
 		  Environment.NewLine,
 		  "\n",
 		  "\r"

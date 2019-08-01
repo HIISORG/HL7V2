@@ -12,7 +12,7 @@ namespace HL7V2 {
     }
 
     /// <summary>
-    /// Process message.
+    /// Process whole message.
     /// </summary>
     /// <returns>Result flag</returns>
     public bool Process(){
@@ -20,9 +20,7 @@ namespace HL7V2 {
       // MSH must at the begining of the messge
       bool ok = false;
 			foreach (string s in content.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)) {
-        if ( s.StartsWith("MSH", StringComparison.OrdinalIgnoreCase)) {
-          ok = true;
-        }
+        ok |= s.StartsWith("MSH", StringComparison.OrdinalIgnoreCase);
 
 				Segments.Add(new Segment(s, Version));
 			}
@@ -35,11 +33,35 @@ namespace HL7V2 {
       throw new NotImplementedException();
     }
 
+    public Segment AddSegment(string s) {
+      Segment segment;
+      if (s.Substring(0, 3).Equals("MSH", StringComparison.InvariantCultureIgnoreCase)) {
+        EncodingCharacter.FieldSeparator = s[3];
+      }
+
+      string[] fields = s.Split(EncodingCharacter.FieldSeparator);
+      if (fields.Length > 0) {
+        switch (s.Substring(0, 3)) {
+          case "MSH":
+            segment = new Segments.MSH(this, s);
+            break;
+          case "NTE":
+            segment = new Segments.NTE(s);
+            break;
+          default:
+            throw new Exception("Invalid Segment Type: " + s);
+        }
+      } else segment = new Segment();
+
+      return segment;
+    }
+
     public override string ToString() {
       return string.Format("[Message: Version={0}]", Version);
     }
 
     #region Variables
+    public DataType.EncodingCharacter EncodingCharacter = new DataType.EncodingCharacter();
     /// <summary>
     /// Text string of the message content
     /// </summary>

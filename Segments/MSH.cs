@@ -1,13 +1,16 @@
 ﻿using System;
-using System.Net.Http.Headers;
 using System.Collections.Generic;
 namespace HL7V2.Segments {
   public class MSH : Segment {
     public MSH(string content) { this.content = content; Process(); }
+    public MSH(Message message, string segment) {
+      Message = message;
+      content = segment;
+    }
 
     public new bool Process() {
       if (content.Length < 20) return false;
-      EncodingCharacters = new DataType.EncodingCharacter(){
+      EncodingCharacters = new DataType.EncodingCharacter {
         FieldSeparator = content[3]
       };
 
@@ -31,7 +34,7 @@ namespace HL7V2.Segments {
     }
 
     public override string ToString() {
-      List<string> lst = new List<string>() {
+      List<string> lst = new List<string> {
         "MSH",
         EncodingCharacters.ToString(),
         SendingApplication.ToString(),
@@ -45,10 +48,21 @@ namespace HL7V2.Segments {
         ProcessingID.ToString(),
         VersionID.ToString()
       };
+      switch (Message.Version) {
+        case "2.3":
+          break;
+        case "2.3.1":
+          break;
+        case "2.4":
+          break;
+        case "2.5":
+          break;
+      }
       return string.Join(EncodingCharacters.FieldSeparator.ToString(), lst);
     }
-    
+
     #region Variables
+    public Message Message;
     /// <summary>
     /// MSH-2 Encoding Characters (ST) 00002.
     /// </summary>

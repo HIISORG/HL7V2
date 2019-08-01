@@ -8,6 +8,7 @@ namespace HL7V2 {
     public Segment() { }
     public Segment(string content) {
       this.content = content;
+      Process();
     }
     public Segment(string content, string version) {
       this.content = content;
@@ -25,6 +26,7 @@ namespace HL7V2 {
     }
 
     #region Variables
+    Message Message;
     protected string content = string.Empty;
     protected readonly string version = string.Empty;
     /// <summary>

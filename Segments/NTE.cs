@@ -3,6 +3,9 @@ namespace HL7V2.Segments {
   public class NTE : Segment {
     public NTE() {
     }
+    public NTE(string s) {
+      content = s;
+    }
 
     #region Variables
     /// <summary>
